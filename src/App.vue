@@ -16,6 +16,7 @@
 
 <script>
 import { PApplication, PContainer, PGraphics } from "vue-pixi-wrapper";
+import * as PIXI from 'pixi.js';
 
 export default {
   name: "App",
@@ -39,8 +40,8 @@ export default {
       // g.beginFill(0xF0F3F9);
       // g.drawRect(1, 0, 8, 8);
     
-      let rows = 144, cols = 144;
-      let width = 8, height = 8;
+      let rows = 12, cols = 12;
+      let width = 32, height = 32;
       
       const total = rows * cols;
       
@@ -55,7 +56,19 @@ export default {
           g.beginFill(0xF0F3F9);
           // x y w h
           g.drawRect(posX, posY, width, height);
-  
+
+          g.interactive = true;
+
+          g.hitArea = new PIXI.Rectangle(posX, posY, width, height);
+
+          g.mouseover = () => {
+            console.log("mouse over")
+          }
+
+          g.mouseout = () => {
+            console.log("mouse leave")
+          }
+
           i++;
       }
     }    
