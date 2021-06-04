@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "konva": "^8.0.2",
     "vue": "^2.6.11",
+    "vue-konva": "^2.1.7",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
