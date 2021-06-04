@@ -16,6 +16,7 @@
 
 <script>
 import { PApplication, PContainer, PGraphics } from "vue-pixi-wrapper";
+import * as PixiJSGrid from 'pixijs-grid'
 import * as PIXI from 'pixi.js';
 
 export default {
@@ -31,47 +32,46 @@ export default {
       height: 1440,
       backgroundColor: 0xFFFFFF,
       resolution: 1,
+      posX: 0,
+      posY: 0,
+      rows: 12,
+      cols: 12,
+      seatWidth: 32,
+      seathHeight: 32
     };
   },
   methods: {
     draw(g) {
-      g.clear();
-      // g.lineStyle(1, 0x79848D);
-      // g.beginFill(0xF0F3F9);
-      // g.drawRect(1, 0, 8, 8);
-    
-      let rows = 12, cols = 12;
-      let width = 32, height = 32;
-      
-      const total = rows * cols;
-      
-      let i = 0;
+      g.clear();    
+      g.lineStyle(1, 0x79848D);
+      g.beginFill(0xF0F3F9);
+      // x y w h
+      g.hitArea = new PIXI.Rectangle(this.posX, this.posY, this.width, this.height);
+      g.drawRect(this.posX, this.posY, this.width, this.height);
 
-      while(i<total){
+      g.interactive = true;
+      g.mouseover = () => {
+        console.log("mouse over")
+      }
+
+      g.mouseout = () => {
+        console.log("mouse leave")
+      }
+
+    }    
+  },
+  mounted () {
+      const total = this.rows * this.cols;
+      let i = 0;
+        while(i<total){
         // ((Math.floor(i/256)) * 8) + 32
         // (Math.floor(i/rows) * height) + margin
-        let posX = Math.floor(i/rows) * height;
-        let posY = (i % rows) * width;                      
-          g.lineStyle(1, 0x79848D);
-          g.beginFill(0xF0F3F9);
-          // x y w h
-          g.drawRect(posX, posY, width, height);
-
-          g.interactive = true;
-
-          g.hitArea = new PIXI.Rectangle(posX, posY, width, height);
-
-          g.mouseover = () => {
-            console.log("mouse over")
-          }
-
-          g.mouseout = () => {
-            console.log("mouse leave")
-          }
-
-          i++;
+        this.posX = Math.floor(i/this.rows) * this.height;
+        this.posY = (i % this.rows) * this.width;                              
+        this.draw()
+        i++;
       }
-    }    
+      
   },
 };
 </script>
