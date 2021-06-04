@@ -1,28 +1,44 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <p-application
+      :width="width"
+      :height="height"
+      :backgroundColor="backgroundColor"
+      :resolution="resolution"
+      :skipHello="true"
+    >
+      <p-container>
+        <p-graphics :draw="draw"/>
+      </p-container>
+    </p-application>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import { PApplication, PContainer, PGraphics } from "vue-pixi-wrapper";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    PApplication,
+    PContainer,
+    PGraphics
+  },
+  data() {
+    return {
+      width: 320,
+      height: 320,
+      backgroundColor: 0xFFFFFF,
+      resolution: 1,
+    };
+  },
+  methods: {
+    draw(g) {
+      g.clear();
+      g.lineStyle(1, 0x79848D);
+      g.beginFill(0xF0F3F9);
+      g.drawRect(1, 0, 8, 8);
+    }
   },
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
