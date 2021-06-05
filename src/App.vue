@@ -1,13 +1,18 @@
 <template>
   <div id="app">
-     <renderer>
+    <Test />
+     <!-- <renderer>
       <container
-        :x="200" :y="400" @pointerdown="scaleObject"
+        :x="0" :y="0" @tick="tickInfo" @pointerdown="scaleObject"
       >
-        <sprite :x="0" :y="0" imagePath="./assets/vue-logo.png"/>
+      <message :x="0" :y="0" text="Hello"/>
       </container>
-    </renderer>
-    <!-- <p-application
+    </renderer> -->
+    <!-- 
+      <sprite :x="0" :y="0" imagePath="./assets/vue-logo.png"/>
+
+      
+      <p-application
       :width="width"
       :height="height"
       :backgroundColor="backgroundColor"
@@ -26,37 +31,19 @@
 </template>
 
 <script>
-import Renderer from './components/PIXIRenderer.vue'
-import Sprite from './components/PIXISprite.vue'
-import Container from './components/PIXIContainer.vue'
-
+import Test from "@/components/Test.vue"
 //import { PApplication, PContainer, PGraphics } from "vue-pixi-wrapper";
 //import * as PIXI from 'pixi.js';
 
 export default {
   name: "App",
   components: {
-    Renderer,
-    Sprite,
-    Container
     // PApplication,
     // PContainer,
     // PGraphics
-  },
-  data() {
-    return {
-      width: 1440,
-      height: 1440,
-      backgroundColor: 0xFFFFFF,
-      resolution: 1,
-    };
+    Test
   },
   methods: {
-
-    scaleObject(container) {
-      container.scale.x *= 1.25;
-      container.scale.y *= 1.25;
-    },
 
     // draw(g) {
  

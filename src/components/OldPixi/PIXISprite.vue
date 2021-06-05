@@ -14,7 +14,7 @@ export default {
   render(h) { return h() },
 
   created() {
-    this.sprite = this.PIXIWrapper.PIXI.Sprite.fromImage(this.imagePath);
+    this.sprite = this.PIXIWrapper.PIXI.Sprite.from(this.imagePath);
     // Set the initial position.
     this.sprite.x = this.x || 0;
     this.sprite.y = this.y || 0;
