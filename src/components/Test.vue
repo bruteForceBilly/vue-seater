@@ -45,10 +45,10 @@ export default {
 
         drawGrid() {
                 
-            const height = 32;
-            const width = 32;
-            const rows = 8;
-            const cols = 8;
+            const height = 8;
+            const width = 8;
+            const rows = 32;
+            const cols = 32;
 
             const total = rows * cols;
             
@@ -76,14 +76,22 @@ export default {
             graphics.drawRoundedRect(posX, posY, width, height, 2);
             graphics.endFill();
 
-            graphics.interactive = true;
-            graphics.buttonMode = true;
+            const texture = this.app.renderer.generateTexture(graphics);
+            const sprite = new PIXI.Sprite(texture);
+
+            sprite.x = posX;
+            sprite.y = posY;
+            
+            sprite.interactive = true;
+            sprite.buttonMode = true;
   
-            graphics.on('pointerdown', () => {
+            sprite.on('pointerdown', () => {
                 this.$emit('selection', [ posX, posY ])
             });
 
-            this.app.stage.addChild(graphics);
+            //graphics.clear();
+
+            this.app.stage.addChild(sprite);
         
             i++;
         
@@ -100,7 +108,6 @@ export default {
 
         this.app = new PIXI.Application({
             view: renderCanvas,
-            antialias: true,
             width: 1024, 
             height: 1024, 
             backgroundColor: 0xffffff, 
