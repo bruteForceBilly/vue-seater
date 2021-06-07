@@ -6,6 +6,7 @@
 
 <script>
 import * as PIXI from 'pixi.js';
+
 export default {
     name: "test",
     data() {
@@ -17,9 +18,6 @@ export default {
         }
     },
     methods: {
-        addSeat(x,y){
-            
-        },
         togglePos(e){
             const { pageX, pageY } = e;
             let mF = (n) => Math.floor(n / 10);

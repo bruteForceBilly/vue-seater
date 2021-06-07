@@ -10,9 +10,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "pixi.js": "^5.2.1",
+    "pixi.js": "^6.0.4",
     "vue": "^2.6.11",
-    "vue-pixi-wrapper": "^1.1.5",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
