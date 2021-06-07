@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
     "pixi.js": "^6.0.4",
     "vue": "^2.6.11",
     "vuex": "^3.4.0"

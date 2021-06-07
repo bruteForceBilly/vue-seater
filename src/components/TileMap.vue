@@ -1,5 +1,5 @@
 <template>
-  <div @click="toggle($event)">
+  <div @mousedown="isDragging = true" @mousemove="toggle($event)">
     <canvas ref="renderCanvas"></canvas>
   </div>
 </template>
@@ -7,8 +7,8 @@
 <script>
 import * as PIXI from 'pixi.js';
 
-const APP_WIDTH = 1280; 
-const APP_HEIGHT = 1280;
+const APP_WIDTH = 1000; 
+const APP_HEIGHT = 1000;
 const TILE_HEIGHT = 10; 
 const TILE_WIDTH = 10;
 const COLS = APP_WIDTH / TILE_WIDTH;
@@ -29,6 +29,8 @@ export default {
     name: "TileMap",
     data() {
         return {
+            isErasing: false,
+            isDragging: false,
             app: null,
             grid: [],
             appContainer: null,
@@ -56,8 +58,8 @@ export default {
                 return acc
             }, null)
         },
-        toggle(e){
-
+        toggle: function(e) {
+            if(!this.isDragging) return;
             const { pageX, pageY } = e;
             let floor = (n) => Math.floor(n / 10);             
             let floorToTen = (n) => Math.floor(n / 10) * 10;
@@ -67,9 +69,11 @@ export default {
             let xTen = floorToTen(pageX);
             let yTen = floorToTen(pageY);
 
-            let seat = this.drawSeat(xTen, yTen);            
+            let seat = this.drawSeat(xTen, yTen);
+            
+            // && this.vertexIsSelected(x,y)
 
-            if(this.vertexIsSelected(x,y)) {
+            if(this.isErasing) {
                 //Toggle Seat in Grid
                 this.setSeatInGrid(x,y)
                 
@@ -91,6 +95,7 @@ export default {
                 this.selectedSeatSprites.push(seat)
                 this.seatContainer.addChild(seat);
             }           
+        
         },
         drawSquareTexture(color = colors.gray, w = TILE_WIDTH,h = TILE_HEIGHT, x = 0,y = 0){
             let graphics = new PIXI.Graphics();
@@ -117,9 +122,21 @@ export default {
         for (let i = 0; i < x.length; i++) {
             x[i] = new Array(ROWS).fill(0);
         }
-        this.grid = Object.freeze(x)
+        this.grid = Object.freeze(x);
+
+        window.addEventListener('mouseup', () => {
+            return this.isDragging = false
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key == 'e') {
+                this.isErasing = !this.isErasing;
+            }
+        });
+
     },
     mounted(){
+      
         const renderCanvas = this.$refs.renderCanvas;
 
         this.app = new PIXI.Application({
@@ -146,6 +163,9 @@ export default {
         this.seatContainer.z = 1;
         this.app.stage.addChild(this.seatContainer);
         
+
+        // Initialize all seats as green 
+
     },
 }
 </script>
