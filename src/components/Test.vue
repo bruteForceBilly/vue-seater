@@ -17,6 +17,9 @@ export default {
         }
     },
     methods: {
+        addSeat(x,y){
+            
+        },
         togglePos(e){
             const { pageX, pageY } = e;
             let mF = (n) => Math.floor(n / 10);
@@ -26,8 +29,8 @@ export default {
 
             let copyPos = [...this.pos]
 
-            copyPos[x][y] = copyPos[x][y] ? 0 : 1;
 
+            copyPos[x][y] = copyPos[x][y] ? 0 : 1;
             return this.pos = Object.freeze(copyPos);
         },
         getSeat(seat) {
@@ -56,6 +59,19 @@ export default {
             }
         },
 
+        drawSquare(w,h,x = 0,y = 0){
+            let graphics = new PIXI.Graphics();
+            graphics.lineStyle({
+                width: 1,
+                color: 0x79848d,
+                alignment: 0, 
+            });
+            graphics.beginFill(0xf0f3f9, 1);
+            graphics.drawRect(x,y,w,h);
+            graphics.endFill();
+            return graphics;
+        },
+
         drawGrid() {
 
         // refactor to sideLength
@@ -67,20 +83,7 @@ export default {
         // const total = rows * cols;
         // let i = 0;
 
-        const makeSquare = (w,h) => {
-            let graphics = new PIXI.Graphics();
-            graphics.lineStyle({
-                width: 1,
-                color: 0x79848d,
-                alignment: 0, 
-            });
-            graphics.beginFill(0xf0f3f9, 1);
-            graphics.drawRect(0,0,w,h);
-            graphics.endFill();
-            return graphics;
-        }
-
-        const texture = this.app.renderer.generateTexture(makeSquare(width, height));
+        const texture = this.app.renderer.generateTexture(this.drawSquare(width, height));
 
         const tilingSprite = new PIXI.TilingSprite(
             texture,
