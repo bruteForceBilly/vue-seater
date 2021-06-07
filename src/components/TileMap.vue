@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="toggle($event)">
     <canvas ref="renderCanvas"></canvas>
   </div>
 </template>
@@ -11,6 +11,8 @@ const APP_WIDTH = 1280;
 const APP_HEIGHT = 1280;
 const TILE_HEIGHT = 10; 
 const TILE_WIDTH = 10;
+const COLS = APP_WIDTH / TILE_WIDTH;
+const ROWS = APP_HEIGHT / TILE_HEIGHT;
 
 const colors = {
     "gray": {
@@ -28,11 +30,68 @@ export default {
     data() {
         return {
             app: null,
+            grid: [],
             appContainer: null,
             seatContainer: null,
+            selectedSeatSprites: [],
+            selectedSeatVertices: []
         }
     },
     methods: {
+        setSeatInGrid(x,y){
+            let copyGrid = [...this.grid]
+            copyGrid[x][y] = copyGrid[x][y] ? 0 : 1;
+            return this.grid = Object.freeze(copyGrid);
+        },
+        drawSeat(x,y){
+            const greenSeat = PIXI.Sprite.from(this.drawSquareTexture(colors.green));
+            greenSeat.x = x;
+            greenSeat.y = y;
+            return greenSeat;
+        },
+        vertexIsSelected(x1, y1){
+            return this.selectedSeatVertices.reduce((acc, cv) => {
+                let [x2, y2] = cv;
+                if(x1 == x2 && y1 == y2) acc = cv
+                return acc
+            }, null)
+        },
+        toggle(e){
+
+            const { pageX, pageY } = e;
+            let floor = (n) => Math.floor(n / 10);             
+            let floorToTen = (n) => Math.floor(n / 10) * 10;
+
+            let x = floor(pageX);
+            let y = floor(pageY);
+            let xTen = floorToTen(pageX);
+            let yTen = floorToTen(pageY);
+
+            let seat = this.drawSeat(xTen, yTen);            
+
+            if(this.vertexIsSelected(x,y)) {
+                //Toggle Seat in Grid
+                this.setSeatInGrid(x,y)
+                
+                // Delete Sprite from Container
+                let spriteElement = this.selectedSeatSprites.find(s => s.x === xTen && s.y === yTen)
+                this.seatContainer.removeChild(spriteElement);  
+
+                // Delete Sprite from selected sprites
+                let spriteIndex = this.selectedSeatSprites.findIndex(s => s.x === xTen && s.y === yTen);
+                this.$delete(this.selectedSeatSprites, spriteIndex);
+
+                // Delete Vertex from selected
+                let vertexIndex = this.selectedSeatVertices.findIndex(v => v[0] === x && v[1] === y);
+                this.$delete(this.selectedSeatVertices, vertexIndex);
+
+            } else {
+                this.setSeatInGrid(x, y)
+                this.selectedSeatVertices.push([x, y])
+                this.selectedSeatSprites.push(seat)
+                this.seatContainer.addChild(seat);
+            }           
+        },
         drawSquareTexture(color = colors.gray, w = TILE_WIDTH,h = TILE_HEIGHT, x = 0,y = 0){
             let graphics = new PIXI.Graphics();
             graphics.lineStyle({
@@ -53,6 +112,13 @@ export default {
             );      
         },
     },
+    created(){
+        let x = new Array(COLS);
+        for (let i = 0; i < x.length; i++) {
+            x[i] = new Array(ROWS).fill(0);
+        }
+        this.grid = Object.freeze(x)
+    },
     mounted(){
         const renderCanvas = this.$refs.renderCanvas;
 
@@ -72,21 +138,12 @@ export default {
 
 
         // add some green tiles to that layer            
-
-              // create a layer for green tiles
+        // create a layer for green tiles
 
         this.seatContainer = new PIXI.Container();
         this.seatContainer.x = 0;
         this.seatContainer.y = 0;
         this.seatContainer.z = 1;
-
-        let greenSeat = PIXI.Sprite.from(this.drawSquareTexture(colors.green));
-
-        greenSeat.x = 100;
-        greenSeat.y = 100;
-
-        this.seatContainer.addChild(greenSeat);
-
         this.app.stage.addChild(this.seatContainer);
         
     },
