@@ -1,19 +1,19 @@
 <template>
   <div id="app">
     <Test v-if="false"/>
-    <TileMap />
+    <Grid />
   </div>
 </template>
 
 <script>
 import Test from "@/components/Test.vue"
-import TileMap from "@/components/TileMap.vue"
+import Grid from "@/components/Grid.vue"
 
 export default {
   name: "App",
   components: {
     Test,
-    TileMap
+    Grid
   },
 };
 </script>
