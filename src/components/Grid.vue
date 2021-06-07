@@ -172,7 +172,7 @@ export default {
         
 
         // Section A
-        const makeSection = function(x, y){
+        const makeSideSection = function(x, y){
             
             const sectionContainer = new PIXI.Container();
 
@@ -195,13 +195,26 @@ export default {
             return sectionContainer
         }
 
+        const makeMidSection = function(x, y){
+            const sectionContainer = new PIXI.Container();
+            sectionContainer.addChild(that.drawTilingSprite(360, 230, colors.gray));
+            sectionContainer.x = x;
+            sectionContainer.y = y;
+            sectionContainer.z = 1;    
+            sectionContainer.cacheAsBitmap = true;
+            return sectionContainer
+        }
+
         //console.log("make", makeSection(100, 100))
 
-        this.app.stage.addChild(makeSection(100, 100));
-        this.app.stage.addChild(makeSection(100, 380));
+        this.app.stage.addChild(makeSideSection(100, 100));
+        this.app.stage.addChild(makeSideSection(100, 380));
 
-        this.app.stage.addChild(makeSection(700, 100));
-        this.app.stage.addChild(makeSection(700, 380));
+        this.app.stage.addChild(makeMidSection(320, 100));
+        this.app.stage.addChild(makeMidSection(320, 380));
+
+        this.app.stage.addChild(makeSideSection(700, 100));
+        this.app.stage.addChild(makeSideSection(700, 380));
 
 
 
