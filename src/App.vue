@@ -2,18 +2,21 @@
   <div id="app">
     <Test v-if="false"/>
     <Grid />
+    <Editor />
   </div>
 </template>
 
 <script>
 import Test from "@/components/Test.vue"
+import Editor from "@/components/Grid.vue"
 import Grid from "@/components/Grid.vue"
 
 export default {
   name: "App",
   components: {
     Test,
-    Grid
+    Grid,
+    Editor
   },
 };
 </script>

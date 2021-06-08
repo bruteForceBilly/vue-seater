@@ -30,7 +30,7 @@ const colors = {
 }
 
 export default {
-    name: "Grid",
+    name: "Editor",
     data() {
         return {
             isErasing: false,
@@ -173,9 +173,7 @@ export default {
 
         // Section A
         const makeSideSection = function(x, y){
-            
             const sectionContainer = new PIXI.Container();
-
             sectionContainer.addChild(that.drawTilingSprite(200, 250, colors.gray));
             sectionContainer.x = x;
             sectionContainer.y = y;
@@ -186,11 +184,9 @@ export default {
             seatContainer.y = 0;
             seatContainer.z = 2;   
             sectionContainer.addChild(seatContainer);
-       
             edges.forEach(e => {
                 seatContainer.addChild(that.drawSeat(e[0] * 10, e[1] * 10));
             })
-        
             seatContainer.cacheAsBitmap = true;
             return sectionContainer
         }
@@ -200,7 +196,7 @@ export default {
             sectionContainer.addChild(that.drawTilingSprite(360, 230, colors.gray));
             sectionContainer.x = x;
             sectionContainer.y = y;
-            sectionContainer.z = 1;    
+            sectionContainer.z = 1;
             sectionContainer.cacheAsBitmap = true;
             return sectionContainer
         }
