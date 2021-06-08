@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <Test v-if="false"/>
-    <Grid />
-    <Editor />
+    <Grid v-if="false"/>
+    <Editor v-if="false"/>
   </div>
 </template>
 
