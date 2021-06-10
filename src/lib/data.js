@@ -16,6 +16,7 @@ const sections = Layout.sections.reduce((acc, cv) => {
     return acc;
 }, {})
 
+
 // 10 x 10 grid
 const vertices = [[0,0],[9,0],[9,9],[0,9]]
 
@@ -105,4 +106,47 @@ const createArea = function(sortedVerticesArray){
         return acc
     }, [])
 }
+
+const createSection = function(areaMatrix){
+    return areaMatrix.reduce((acc, cv, i) => {
+        for(const v of cv) {
+            acc.push([i, v])
+        }
+        return acc
+    }, [])
+}
+
+const createSeats = function(seatsArray){
+    return seatsArray.reduce((acc, cv, i) => {
+         acc.push([i, cv])
+        return acc
+    }, [])
+}
+
+const positionSeatsInSection = function(section, seats){
+    return section.reduce((acc, cv, i) => {
+        let [sectionId, tuplet] = cv;
+        seats.forEach(seat => {
+            let [seatId, seatObject] = seat;
+            acc.push([seatObject, tuplet])
+        })
+        return acc
+    }, [])
+}
+
+//const section = new Map(createSection(createArea(sortedVertices)))
+const section = createSection(createArea(sortedVertices));
+const seats = createSeats(sections["main hall"]);
+
+const seatsMappedToSection = new Map(positionSeatsInSection(section, seats))
+
+seatsMappedToSection.get(sections["main hall"][0])
+
+
+
+
+
+
+
+
 
