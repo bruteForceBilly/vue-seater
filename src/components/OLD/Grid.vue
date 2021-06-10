@@ -163,6 +163,7 @@ export default {
         this.appContainer.x = 0;
         this.appContainer.y = 0;
         this.appContainer.addChild(this.drawTilingSprite(this.app.screen.width, this.app.screen.height, colors.white));
+        
         this.app.stage.addChild(this.appContainer);
 
 
