@@ -1,6 +1,6 @@
 # vue-seater 🪑
 
-This is a start of a seat overview app can give visitors or venues overview of their reserved tickets and seats. 
+This is a start of a seat overview app that can give visitors or venues an overview of reserved tickets and seats. 
 
 In the lib directory you can find modules that is the base of the design for the app.
 
