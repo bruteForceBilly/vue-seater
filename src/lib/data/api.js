@@ -36,4 +36,4 @@ const layout = {
   ]
 }
 
-export { layout as default };
+export default layout; 
