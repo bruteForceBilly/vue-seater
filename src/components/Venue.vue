@@ -1,8 +1,8 @@
 <template>
   <div>
-    <canvas @mousemove="mouseMoveHandler($event)" ref="renderCanvas"></canvas>
+    <canvas @mousemove="setPointerPosition($event)" ref="renderCanvas"></canvas>
     <figure>
-       
+       pointerPosition: {{ pointerSeat }}
     </figure>
   </div>
 </template>
@@ -20,20 +20,22 @@ export default {
     return {  
       app: null,
       map: null,
-      pointerPagePosition: null
+      pointerPageX: null,
+      pointerPageY: null,
+      selectedSeat: null,
+      reversedMap: null
     };
   },
   computed: {
-    pointerGridPosition(){
-        let [x, y] = this.pointerPagePosition
-        let floor = (n) => Math.floor(n / 10);
-        return [floor(x), floor(y)]
-    },
+      pointerSeat() {
+          return { "x" : this.pointerPageX, "y": this.pointerPageX} 
+      },
   },
   methods: {
-    mouseMoveHandler(e){
+    setPointerPosition(e){
         let { pageX, pageY } = e;
-        return this.pointerPagePosition = [pageX, pageY]
+        this.pointerPageX = Math.floor(pageX / 10)
+        this.pointerPageY = Math.floor(pageY / 10)
     },
     drawSeat(x, y, color = CONS.COLORS.white) {
       const seat = PIXI.Sprite.from(this.drawSquareTexture(color));
@@ -65,13 +67,21 @@ export default {
   },
   created() {
     try {
-        return this.map = seatMapper(sections["main hall"], vertices.square);
+      this.map = seatMapper(sections["main hall"], vertices.square);
+      let reversedMap = new Map();
+
+    
+    this.reversedMap = reversedMap;
+     
     } catch (e) {
         console.error(e);
     }
   },
   mounted() {
-    //let that = this;
+    let that = this;
+
+    console.log(this.map.size)
+
     const renderCanvas = this.$refs.renderCanvas;
 
     this.app = new PIXI.Application({
@@ -92,9 +102,9 @@ export default {
         CONS.COLORS.white
       )
     );
+    
     this.app.stage.addChild(this.appContainer);
 
-    /*
         const drawSection = function(x, y){
             const sectionContainer = new PIXI.Container();
             sectionContainer.addChild(that.drawTilingSprite(60, 30, CONS.COLORS.gray));
@@ -112,10 +122,30 @@ export default {
             })
             seatContainer.cacheAsBitmap = true;
             return sectionContainer
-        } */
+        } 
 
-    //this.app.stage.addChild(drawSection(100, 100));
+        const drawSquareSection = function(x, y){
+             const sectionContainer = new PIXI.Container();
+            sectionContainer.addChild(that.drawTilingSprite(600, 300, CONS.COLORS.gray));
+            sectionContainer.x = x;
+            sectionContainer.y = y;
+            sectionContainer.z = 1;
+            return sectionContainer
+        } 
+
+        this.app.stage.addChild(drawSection(100, 100));
+        
+        this.app.stage.addChild(drawSquareSection(100, 200));
+
+
   },
+  watch: {
+      pointerSeat: {
+          handler: function(newVal){
+              return this.selectedSeat = this.map.get(newVal)
+          }
+      }
+  }
 };
 </script>
 <style scoped>
