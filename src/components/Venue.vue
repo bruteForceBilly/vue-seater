@@ -9,7 +9,7 @@
 
 <script>
 import * as PIXI from "pixi.js";
-import CONS from "@/common/constants.js";
+import CONS from "@/common/Constants.js";
 import vertices from "@/lib/data/vertices.js";
 import sections from "@/lib/data/sections.js";
 import seatMapper from "@/lib/seatMapper.js";
